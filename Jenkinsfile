@@ -57,16 +57,14 @@ pipeline {
         }
 
         stage('Start Application') {
-            steps {
-                withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
-                    bat '''
-                        powershell -NoProfile -Command ^
-                        "Start-Process -FilePath 'javaw.exe' ^
-                        -ArgumentList '-jar','C:\\jenkins-deploy\\demo666\\demo666.jar','--server.port=8081'"
-                    '''
-                }
-            }
+    steps {
+        withEnv(['JENKINS_NODE_COOKIE=dontKillMe']) {
+            bat '''
+                start "" /B javaw.exe -jar "%DEPLOY_DIR%\\demo666.jar" --server.port=%APP_PORT%
+            '''
         }
+    }
+}
 
         stage('Wait for Application') {
             steps {
